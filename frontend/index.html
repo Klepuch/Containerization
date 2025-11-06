@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Container Frontend</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+        h1 { color: #333; }
+        pre { background-color: #fff; border: 1px solid #ddd; padding: 15px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Multi-Container App Status</h1>
+    <p>Fetching data from Backend (http://localhost:5000/api/status)...</p>
+    <pre id="data-output">Loading...</pre>
+
+    <script>
+        fetch('http://localhost:5000/api/status')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('data-output').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('data-output').textContent = 
+                    '❌ Error fetching data: ' + error.message + 
+                    '\n\nCheck if the Flask container is running correctly on port 5000.';
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
